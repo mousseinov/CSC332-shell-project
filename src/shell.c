@@ -22,10 +22,6 @@ void init();
 int main(int argc, char* argv[]) {
 
 	init();
-
-
-
-
 	return 1;
 }
 
@@ -62,7 +58,18 @@ void init() {
 				Then wait for user to press return
 
 				*/
-				break;
+				printf("This shell wouldn't");
+				printf("have been possible without these awesome people <3\n");
+				printf("Team Members:\n");
+				printf("Tahsin Jahin: Front End\n");
+				printf("Krystal Leong: Back end\n");
+				printf("Michael Ousseinov: Data Engineer\n");
+				printf("Angelica Hernandez: Scheme & LISP Developer\n");
+				printf("PRESS ENTER!");
+				char ch=fgetc(stdin);
+				if(ch==0x0A)
+					break;
+
 			}
 			
 
