@@ -17,6 +17,9 @@
 
 
 void init();
+int cd(char* directorypath);
+void history();
+int clear();
 
 
 int main(int argc, char* argv[]) {
@@ -72,10 +75,6 @@ void init() {
 
 			}
 			
-
-
-			// From lab assignment - Modify later
-			/*
 			char* command = tokens[0];
 			char* arguments[NUM_OF_TOKENS-1];
 			for(int i = 0; i < NUM_OF_TOKENS-1; i++) {
@@ -93,7 +92,6 @@ void init() {
 			} else {
 				wait(NULL);
 			}
-			*/
 		}
 
 
