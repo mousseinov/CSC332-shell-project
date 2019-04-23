@@ -17,7 +17,6 @@
 
 
 void init();
-int cd(char* directorypath);
 void history();
 int clear();
 
