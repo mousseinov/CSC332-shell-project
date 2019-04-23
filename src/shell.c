@@ -68,9 +68,14 @@ void init() {
 				printf("Michael Ousseinov: Data Engineer\n");
 				printf("Angelica Hernandez: Scheme & LISP Developer\n");
 				printf("PRESS ENTER!");
-				char ch=fgetc(stdin);
-				if(ch==0x0A)
-					break;
+				while(1){
+					char ch=fgetc(stdin);
+					if(ch==0x0A)
+						break;
+
+				}
+				break;
+				break;
 
 			}
 			
@@ -83,11 +88,9 @@ void init() {
 			int run_command_process = fork();
 			if(run_command_process < 0) {
 				perror("Fork Error");
-				return 1;
 			} else if (run_command_process == 0) {
 				execvp(command, arguments);
 				perror("execvp failed");
-				return 1;
 			} else {
 				wait(NULL);
 			}
