@@ -1,14 +1,10 @@
 #include <stdio.h>
-
+#define clear() printf("\033[H\033[J");
 
 int main(int argc, char* argv[]) {
-
-
-        printf("This is clear.c\n");
-
-        return 1;
+		clear();
+        return 0;
 }
-
 
 
 
