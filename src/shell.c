@@ -1,106 +1,81 @@
 #include <stdio.h>
+#include <sys/types.h>
 #include <unistd.h>
-#include <string.h>
 #include <sys/wait.h>
-#define NUM_OF_TOKENS 10
-#define INPUT_SIZE 256
-/*
+#include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <stdbool.h>
 
-1. Shell
-2. cd
-3. exit
-4. history
-6. clear
-
-
-*/
-
-
-void init();
-void history();
-int clear();
-
-
-int main(int argc, char* argv[]) {
-
-	init();
-	return 1;
-}
-
-
-void init() {
-	while(1) {
-		printf(">>> ");
-		
-		char input[INPUT_SIZE];
-		for(int i = 0; i < INPUT_SIZE; i++) {
-			input[i] = '\0';
-		}
-		gets(input);
-		if(input[0] != '\0') {
-			char s[INPUT_SIZE];
-			char* tokens[NUM_OF_TOKENS];
-			for(int i = 0; i < 10; i++){
-				tokens[i] = NULL;
-			}
-
-			strcpy(s, input);
-			char* token = strtok(s, " ");
-			int i = 0;
-			while (token) {
-		    	tokens[i] = token;
-		    	i += 1;
-		    	token = strtok(NULL, " ");
-			}
-
-			// If User enters quit leave the program!
-			if (strcmp(tokens[0],"exit") == 0) {
-				/*
-				Print Names
-				Then wait for user to press return
-
-				*/
-				printf("This shell wouldn't");
-				printf("have been possible without these awesome people <3\n");
-				printf("Team Members:\n");
-				printf("Tahsin Jahin: Front End\n");
-				printf("Krystal Leong: Back end\n");
-				printf("Michael Ousseinov: Data Engineer\n");
-				printf("Angelica Hernandez: Scheme & LISP Developer\n");
-				printf("PRESS ENTER!");
-				while(1){
-					char ch=fgetc(stdin);
-					if(ch==0x0A)
-						break;
-
-				}
-				break;
-				break;
-
-			}
-			
-			char* command = tokens[0];
-			char* arguments[NUM_OF_TOKENS-1];
-			for(int i = 0; i < NUM_OF_TOKENS-1; i++) {
-				arguments[i] = tokens[i+1];
-			}
-
-			int run_command_process = fork();
-			if(run_command_process < 0) {
-				perror("Fork Error");
-			} else if (run_command_process == 0) {
-				execvp(command, arguments);
-				perror("execvp failed");
-			} else {
-				wait(NULL);
-			}
-		}
-
-
+void parse(char command[], char *arg[]){
+	char *split;
+	split = strtok(command," "); // split at space
+	int i = 0;
+	while(split != NULL) {
+		arg[i]= split;  // array to store arguments
+		split = strtok(NULL," "); // continue to tokenize
+		i++; // keeps track of number of arguments
 	}
 }
 
+int main (int argc, char* argv[]) {
+	char command[32];
+	char *split;
+  char *arg[20];
 
+	printf("Welcome to our shell! Here are the following custom commands:\n");
+	printf("Exit*\n");
+	printf("History*\n");
+	printf("Cd*\n");
+	printf("Clear*\n");
 
+	printf (">>>");
+	scanf(" %[^\n]s", command); //will read all characters until you reach \n (or EOF), replace white spaces with 0
 
+  for(int i = 0; i<strlen(command); i++){
+      command[i] = tolower(command[i]);
+  }
 
+  while (strcmp(command,"exit")!=0) { //while the command isnt quit
+			//parse the command
+			parse(command, arg);
+
+      //create new child
+      int child = fork();
+      if(child < 0){ //error
+          printf("ERROR: error forking child");
+          exit(1);
+      }
+      else if (child == 0) {
+          // in the child process
+          execvp (arg[0],arg);
+          printf ("ERROR: exec failed\n"); //error will show only if execvp encounters an error
+					exit(1);												 //else it will never reach here for the exit
+      }
+      else{
+          wait(NULL); //parent waits for child proc to complete
+          for (int j = 0; j < 20; ++j) // need to clear the whole arg array
+              arg[j] = NULL;
+          printf (">>>");
+          scanf(" %[^\n]s", command);
+          for(int i = 0; i<strlen(command); i++){
+              command[i] = tolower(command[i]);
+          }
+      }
+  }
+	if(strcmp(command,"exit")==0){
+		printf("This shell wouldn't have been possible without these awesome people <3\n");
+		printf("Team Members:\n");
+		printf("Tahsin Jahin: Front End\n");
+		printf("Krystal Leong: Back end\n");
+		printf("Michael Ousseinov: Data Engineer\n");
+		printf("Angelica Hernandez: Scheme & LISP Developer\n");
+		fgetc(stdin);
+		char ch;
+		printf("PRESS ENTER!\n");
+		//here also if you press any other key will wait until you press ENTER
+		scanf("%c",&ch);
+		return 0; //return control to original shell on machine
+	}
+	return 0; //we don't ever make it here due to the return 0 in the  if statement above
+}
