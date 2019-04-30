@@ -23,6 +23,12 @@ int main (int argc, char* argv[]) {
 	char *split;
   char *arg[20];
 
+	printf("Welcome to our shell! Here are the following custom commands:\n");
+	printf("Exit*\n");
+	printf("History*\n");
+	printf("Cd*\n");
+	printf("Clear*\n");
+
 	printf (">>>");
 	scanf(" %[^\n]s", command); //will read all characters until you reach \n (or EOF), replace white spaces with 0
 
@@ -30,7 +36,7 @@ int main (int argc, char* argv[]) {
       command[i] = tolower(command[i]);
   }
 
-  while (strcmp(command,"quit")!=0) { //while the command isnt quit
+  while (strcmp(command,"exit")!=0) { //while the command isnt quit
 			//parse the command
 			parse(command, arg);
 
@@ -57,7 +63,7 @@ int main (int argc, char* argv[]) {
           }
       }
   }
-	if(strcmp(command,"quit")==0){
+	if(strcmp(command,"exit")==0){
 		printf("This shell wouldn't have been possible without these awesome people <3\n");
 		printf("Team Members:\n");
 		printf("Tahsin Jahin: Front End\n");
