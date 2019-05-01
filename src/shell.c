@@ -8,7 +8,8 @@
 #include <stdbool.h>
 
 #define LIST_SIZE 5
-char* history[LIST_SIZE];
+//char* history[LIST_SIZE];
+char history[LIST_SIZE][20];
 int curr_size = 0;
 void add_command_to_history(char* command);
 void print_history();
@@ -50,30 +51,41 @@ int main (int argc, char* argv[]) {
       //create new child
 	  if(strcmp(arg[0],"history")==0) {
 	  	print_history();
-	  	break;
+	  	for (int j = 0; j < 20; ++j) // need to clear the whole arg array
+			arg[j] = NULL;
+		printf (">>> ");
+		scanf(" %[^\n]s", command);
+		for(int i = 0; i<strlen(command); i++){
+			command[i] = tolower(command[i]);
+		}
 	  }
-	  add_command_to_history(arg[0]);
-      int child = fork();
-      if(child < 0){ //error
-          printf("ERROR: error forking child");
-          exit(1);
-      }
-      else if (child == 0) {
-          // in the child process
-          execvp (arg[0],arg);
-          printf ("ERROR: exec failed\n"); //error will show only if execvp encounters an error
-		  exit(1);												 //else it will never reach here for the exit
-      }
-      else{
-          wait(NULL); //parent waits for child proc to complete
-          for (int j = 0; j < 20; ++j) // need to clear the whole arg array
-              arg[j] = NULL;
-          printf (">>> ");
-          scanf(" %[^\n]s", command);
-          for(int i = 0; i<strlen(command); i++){
-              command[i] = tolower(command[i]);
-          }
-      }
+	  else {
+			add_command_to_history(arg[0]);
+			int child = fork();
+			if(child < 0){ //error
+          	printf("ERROR: error forking child");
+          	exit(1);
+			}
+			else if (child == 0) {
+			// in the child process
+			execvp (arg[0],arg);
+			printf ("ERROR: exec failed\n"); //error will show only if execvp encounters an error
+		    exit(1);												 //else it will never reach here for the exit
+			}
+			else{
+				wait(NULL); //parent waits for child proc to complete
+				for (int j = 0; j < 20; ++j) // need to clear the whole arg array
+					arg[j] = NULL;
+				printf (">>> ");
+				scanf(" %[^\n]s", command);
+				for(int i = 0; i<strlen(command); i++){
+					command[i] = tolower(command[i]);
+				}
+		}
+
+
+	  }
+	  
   }
 	if(strcmp(command,"exit")==0){
 		printf("This shell wouldn't have been possible without these awesome people <3\n");
@@ -100,25 +112,22 @@ int main (int argc, char* argv[]) {
 
 void add_command_to_history(char* command) {
 	if(curr_size < LIST_SIZE) {
-		//history[curr_size] = command;
-		char* buffer;
-		strcpy(buffer, command);
-		history[curr_size] = buffer;
+		strcpy(history[curr_size], command);
 		curr_size += 1;
 	} else {
 		for(int i = 0; i < LIST_SIZE - 1; i++){
-			history[i] = history[i+1];
+			strcpy(history[i],history[i+1]);
 		}
-		history[LIST_SIZE-1] = command;
+		strcpy(history[LIST_SIZE-1], command);
 	}
 
 }
 
 void print_history() {
 	if(curr_size == 0)
-		printf(" No History\n");
+		printf("--- No History\n");
 	for(int i = 0; i < curr_size; i++)
-		printf(" %s\n", history[i]);
+		printf("--- %s\n", history[i]);
 
 }
 
