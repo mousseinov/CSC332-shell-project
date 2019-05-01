@@ -68,12 +68,12 @@ int main (int argc, char* argv[]) {
           	exit(1);
 			}
 			else if (child == 0) {
-			// in the child process
-			//execvp (arg[0],arg);
-			execl(arg[0], NULL);
-			//printf ("ERROR: exec failed\n"); //error will show only if execvp encounters an error
-		    execvp(arg[0], arg);
-		    printf("ERROR: exec failed\n");
+				// in the child process
+				//execvp (arg[0],arg);
+				execl(arg[0], NULL);
+				printf ("ERROR: execl failed for custom commands. Using default commands\n"); //error will show only if execvp encounters an error
+		    execvp(arg[0], arg); //if execl doesnt work, then will fall into testing for execvp
+		    printf("ERROR: execvp failed too!\n");
 		    exit(1);												 //else it will never reach here for the exit
 			}
 			else{
