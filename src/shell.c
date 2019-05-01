@@ -117,15 +117,16 @@ void print_history() {
 void print_team_banner() {
 		printf("This shell wouldn't have been possible without these awesome people <3\n");
 		printf("Team Members:\n");
+		printf("----------------\n");
 		printf("Tahsin Jahin: Linux Performance Engineer\n");
-		printf("Current MM.La Fleur Software Intern\n");
+		printf("--------------------------------------------------\n");
 		printf("Krystal Leong: High Performance Computing Cloud Engineer\n");
-		printf("Incoming Google Software Engineering Intern 2019\n");
-
+		printf("--------------------------------------------------\n");
 		printf("Michael Ousseinov: Deadlock Systems Specialist (Consultant)\n");
+	    printf("--------------------------------------------------\n");
 		printf("Angelica Hernandez: Amazon Developer  \n");
-		printf("Incoming Bank of America Intern\n");
-
+		printf("--------------------------------------------------\n");
+		
 }
 
 void exit_shell(){
