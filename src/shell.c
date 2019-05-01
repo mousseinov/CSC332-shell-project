@@ -14,6 +14,7 @@ int curr_size = 0;
 void add_command_to_history(char* command);
 void print_history();
 void print_team_banner();
+void exit_shell();
 
 void parse(char command[], char *arg[]){
 	char *split;
@@ -46,18 +47,18 @@ int main (int argc, char* argv[]) {
 
   while (strcmp(command, "exit")!=0) { //while the command isnt quit
   	   //parse the command
-	   parse(command, arg);
+	  parse(command, arg);
 
       //create new child
 	  if(strcmp(arg[0],"history")==0) {
 	  	print_history();
 	  	for (int j = 0; j < 20; ++j) // need to clear the whole arg array
 			arg[j] = NULL;
-		printf (">>> ");
-		scanf(" %[^\n]s", command);
-		for(int i = 0; i<strlen(command); i++){
-			command[i] = tolower(command[i]);
-		}
+			printf (">>> ");
+			scanf(" %[^\n]s", command);
+			for(int i = 0; i<strlen(command); i++){
+				command[i] = tolower(command[i]);
+			}
 	  }
 	  else {
 			add_command_to_history(arg[0]);
@@ -81,23 +82,13 @@ int main (int argc, char* argv[]) {
 				for(int i = 0; i<strlen(command); i++){
 					command[i] = tolower(command[i]);
 				}
-		}
-
-
+			}
 	  }
-	  
   }
 	if(strcmp(command,"exit")==0){
-		print_team_banner();
-
-		fgetc(stdin);
-		char ch;
-		printf("PRESS ENTER!");
-		//here also if you press any other key will wait until you press ENTER
-		scanf("%c",&ch);
-		return 0; //return control to original shell on machine
+		exit_shell();
 	}
-	return 0; //we don't ever make it here due to the return 0 in the  if statement above
+	return 0; //returns contrl to the original shell
 }
 
 
@@ -111,7 +102,6 @@ void add_command_to_history(char* command) {
 		}
 		strcpy(history[LIST_SIZE-1], command);
 	}
-
 }
 
 void print_history() {
@@ -119,7 +109,6 @@ void print_history() {
 		printf("--- No History\n");
 	for(int i = 0; i < curr_size; i++)
 		printf("--- %s\n", history[i]);
-
 }
 
 void print_team_banner() {
@@ -136,5 +125,11 @@ void print_team_banner() {
 
 }
 
-
-
+void exit_shell(){
+	print_team_banner();
+	fgetc(stdin);
+	char ch;
+	printf("PRESS ENTER!");
+	//here also if you press any other key will wait until you press ENTER
+	scanf("%c",&ch);
+}
