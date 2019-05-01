@@ -69,8 +69,11 @@ int main (int argc, char* argv[]) {
 			}
 			else if (child == 0) {
 			// in the child process
-			execvp (arg[0],arg);
-			printf ("ERROR: exec failed\n"); //error will show only if execvp encounters an error
+			//execvp (arg[0],arg);
+			execl(arg[0], NULL);
+			//printf ("ERROR: exec failed\n"); //error will show only if execvp encounters an error
+		    execvp(arg[0], arg);
+		    printf("ERROR: exec failed\n");
 		    exit(1);												 //else it will never reach here for the exit
 			}
 			else{
