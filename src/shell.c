@@ -13,7 +13,7 @@ char history[LIST_SIZE][20];
 int curr_size = 0;
 void add_command_to_history(char* command);
 void print_history();
-
+void print_team_banner();
 
 void parse(char command[], char *arg[]){
 	char *split;
@@ -88,16 +88,7 @@ int main (int argc, char* argv[]) {
 	  
   }
 	if(strcmp(command,"exit")==0){
-		printf("This shell wouldn't have been possible without these awesome people <3\n");
-		printf("Team Members:\n");
-		printf("Tahsin Jahin: Linux Performance Engineer\n");
-		printf("Current MM.La Fleur Software Intern\n");
-		printf("Krystal Leong: High Performance Computing Cloud Engineer\n");
-		printf("Incoming Google Software Engineering Intern 2019\n");
-
-		printf("Michael Ousseinov: Deadlock Systems Specialist (Consultant)\n");
-		printf("Angelica Hernandez: Amazon Developer  \n");
-		printf("Incoming Bank of America Intern\n");
+		print_team_banner();
 
 		fgetc(stdin);
 		char ch;
@@ -128,6 +119,20 @@ void print_history() {
 		printf("--- No History\n");
 	for(int i = 0; i < curr_size; i++)
 		printf("--- %s\n", history[i]);
+
+}
+
+void print_team_banner() {
+		printf("This shell wouldn't have been possible without these awesome people <3\n");
+		printf("Team Members:\n");
+		printf("Tahsin Jahin: Linux Performance Engineer\n");
+		printf("Current MM.La Fleur Software Intern\n");
+		printf("Krystal Leong: High Performance Computing Cloud Engineer\n");
+		printf("Incoming Google Software Engineering Intern 2019\n");
+
+		printf("Michael Ousseinov: Deadlock Systems Specialist (Consultant)\n");
+		printf("Angelica Hernandez: Amazon Developer  \n");
+		printf("Incoming Bank of America Intern\n");
 
 }
 
