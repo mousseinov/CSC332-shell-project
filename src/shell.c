@@ -96,7 +96,7 @@ int main (int argc, char* argv[]) {
 				}
 				else{
 					wait(NULL); //parent waits for child proc to complete
-					for (int j = 0; j < 20; ++j) // need to clear the whole arg array
+					for (int j = 0; j < 20; ++j) // need to clear the whole arg array, resets the shell for another command
 						arg[j] = NULL;
 					printf (">>> ");
 					scanf(" %[^\n]s", command);
@@ -107,7 +107,7 @@ int main (int argc, char* argv[]) {
 			}
 	  }
   }
-	if(strcmp(command,"exit")==0){
+	if(strcmp(command,"exit")==0){ //user typed in exit
 		exit_shell();
 	}
 	return 0; //returns control to the original shell
