@@ -30,7 +30,7 @@ void parse(char command[], char *arg[]){
 int main (int argc, char* argv[]) {
 	char command[32];
 	char *split;
-    char *arg[20];
+        char *arg[20];
 
 	printf("Welcome to our shell! Here are the following custom commands:\n");
 	printf("Exit*\n");
@@ -61,17 +61,42 @@ int main (int argc, char* argv[]) {
 			}
 	  }
 	  else {
-			add_command_to_history(arg[0]);
+		add_command_to_history(arg[0]);
+		if(strcmp(arg[0],"cd")==0) {
+		        char cwd[100]; 
+	        	if (getcwd(cwd, 100) == NULL){ 
+		                perror("chdir() error"); 
+		        } 
+	        	else { 
+		                int cd = chdir(".."); 
+		                if (cd != 0){ 
+	        	                perror("cd failed: cannot go up any further.\n"); 
+	                	} 
+		                else { 
+		                        char* current_dir = getcwd(cwd, 100);
+					printf("%s ", current_dir);
+	                	} 
+		        }
+			for (int j = 0; j < 20; ++j) // need to clear the whole arg array
+				arg[j] = NULL;
+			printf (">>> ");
+			scanf(" %[^\n]s", command);
+			for(int i = 0; i<strlen(command); i++){
+				command[i] = tolower(command[i]);
+			}
+		}
+		else {
 			int child = fork();
 			if(child < 0){ //error
-          	printf("ERROR: error forking child");
-          	exit(1);
+	          		printf("ERROR: error forking child");
+        		  	exit(1);
 			}
 			else if (child == 0) {
 				// in the child process
 				//execvp (arg[0],arg);
-				execl(arg[0], NULL);
+				execl(arg[0], "", NULL);
 				printf ("ERROR: execl failed for custom commands. Using default commands\n"); //error will show only if execvp encounters an error
+		    
 		    execvp(arg[0], arg); //if execl doesnt work, then will fall into testing for execvp
 		    printf("ERROR: execvp failed too!\n");
 		    exit(1);												 //else it will never reach here for the exit
@@ -86,6 +111,7 @@ int main (int argc, char* argv[]) {
 					command[i] = tolower(command[i]);
 				}
 			}
+		}
 	  }
   }
 	if(strcmp(command,"exit")==0){
