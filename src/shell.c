@@ -16,14 +16,18 @@ void print_history();
 void print_team_banner();
 void exit_shell();
 
+// keep track of the original filepath (e.g. if changing directories, we will still be able to call
+// custom commands
 char* shell_dir;
 
 int main (int argc, char* argv[]) {
 	char command[32];
 	char *split;
-  char *arg[20];
+	char *arg[20];
 	char filepath[100];
+	// store the path of this program; should be with the source files
 	shell_dir = getcwd(filepath, 100);
+	// make sure we are not trying to access a file with the same name as the folder
 	strcat(shell_dir, "/");
 
 	printf("Welcome to our shell! Here are the following custom commands: OwO UwU\n");
@@ -35,40 +39,41 @@ int main (int argc, char* argv[]) {
 	printf (">>> ");
 	scanf(" %[^\n]s", command); //will read all characters until you reach \n (or EOF), replace white spaces with 0
 
-  for(int i = 0; i<strlen(command); i++){
-      command[i] = tolower(command[i]);
-  }
+  	for(int i = 0; i<strlen(command); i++){
+		command[i] = tolower(command[i]);
+	}
 
-  while (strcmp(command, "exit")!=0) { //while the command isnt exit
-	  parse(command, arg); //parse the command
-      //create new child
-	  if(strcmp(arg[0],"history")==0) {
-	  	print_history();
-	  	for (int j = 0; j < 20; ++j) // need to clear the whole arg array
-			arg[j] = NULL;
+	while (strcmp(command, "exit")!=0) { //while the command isnt exit
+		parse(command, arg); //parse the command
+		//create new child
+		if(strcmp(arg[0],"history")==0) {
+	  		print_history();
+	  		for (int j = 0; j < 20; ++j) // need to clear the whole arg array
+				arg[j] = NULL;
 			printf (">>> ");
 			scanf(" %[^\n]s", command);
 			for(int i = 0; i<strlen(command); i++){
 				command[i] = tolower(command[i]);
 			}
-	  }
-	  else {
+		}
+		else {
 			add_command_to_history(arg[0]);
 			if(strcmp(arg[0],"cd")==0) {
-	      char cwd[100];
-	    	if (getcwd(cwd, 100) == NULL){
-	        perror("chdir() error");
-	      }
-	    	else {
-	        int cd = chdir("..");
-	        if (cd != 0){
+				char cwd[100];
+		    		if (getcwd(cwd, 100) == NULL){
+		        		perror("chdir() error");
+				}
+				else {
+		        		int cd = chdir("..");
+	        			if (cd != 0){
 						perror("cd failed.... (/# 0 A0)/\n");
-	      	}
-	        else {
+					}
+					else {
+						// get new directory
 						char* current_dir = getcwd(cwd, 100);
 						printf("%s ", current_dir);
-	      	}
-	      }
+					}
+	      			}
 				for (int j = 0; j < 20; ++j) // need to clear the whole arg array
 					arg[j] = NULL;
 				printf (">>> ");
@@ -80,23 +85,25 @@ int main (int argc, char* argv[]) {
 			else {
 				int child = fork();
 				if(child < 0){ //error
-      		printf("ERROR: error forking child 0n0");
-  		  	exit(1);
+      					printf("ERROR: error forking child 0n0");
+  		  			exit(1);
 				}
 				else if (child == 0) {
 					// in the child process
 					char* path = shell_dir;
 					strcat(path, arg[0]);
 					printf("%s", path);
+					// attempt to use custom commands
 					execl(path, "", NULL);
 					printf ("ERROR: ~>A<~  ~>A<~\n\texecl failed for custom commands. Attempting to use default commands\n"); //error will show only if execl encounters an error
-			    execvp(arg[0], arg); //if execl doesnt work, then will fall into testing for execvp
-			    printf("ERROR: >.> >.> >.> >.> >.>\n\texecvp failed too!\n");
-			    exit(1); //if it enters either one of the two execs, it will never reach here for the exit
+					// else run the default command
+					execvp(arg[0], arg); //if execl doesnt work, then will fall into testing for execvp
+					printf("ERROR: >.> >.> >.> >.> >.>\n\texecvp failed too!\n");
+					exit(1); //if it enters either one of the two execs, it will never reach here for the exit
 				}
-				else{
+				else {
 					wait(NULL); //parent waits for child proc to complete
-					for (int j = 0; j < 20; ++j) // need to clear the whole arg array
+					for (int j = 0; j < 20; ++j) // need to clear the whole arg array, resets the shell for another command
 						arg[j] = NULL;
 					printf (">>> ");
 					scanf(" %[^\n]s", command);
@@ -105,9 +112,9 @@ int main (int argc, char* argv[]) {
 					}
 				}
 			}
-	  }
-  }
-	if(strcmp(command,"exit")==0){
+		}
+	}
+	if(strcmp(command,"exit")==0){ //user typed in exit
 		exit_shell();
 	}
 	return 0; //returns control to the original shell
@@ -133,17 +140,17 @@ void print_history() {
 }
 
 void print_team_banner() {
-		printf("This shell wouldn't have been possible without these awesome people <3\n");
-		printf("Team Members: UwU\n");
-		printf("----------------\n");
-		printf("Tahsin Jahin: Linux Performance Engineer \\(>u<)/\n");
-		printf("--------------------------------------------------\n");
-		printf("Krystal Leong: High Performance Computing Cloud Engineer /(=A=)/ ==3\n");
-		printf("--------------------------------------------------\n");
-		printf("Michael Ousseinov: Deadlock Systems Specialist (Consultant Intern) (`@ w @`)\n");
-		printf("--------------------------------------------------\n");
-		printf("Angelica Hernandez: Fintech Entrepreneur Looking for Opportunities in Cloud Development v(0u<)v \n");
-		printf("--------------------------------------------------\n");
+	printf("This shell wouldn't have been possible without these awesome people <3\n");
+	printf("Team Members: UwU\n");
+	printf("----------------\n");
+	printf("Tahsin Jahin: Linux Performance Engineer \\(>u<)/\n");
+	printf("--------------------------------------------------\n");
+	printf("Krystal Leong: High Performance Computing Cloud Engineer /(=A=)/ ==3\n");
+	printf("--------------------------------------------------\n");
+	printf("Michael Ousseinov: Deadlock Systems Specialist (Consultant Intern) (`@ w @`)\n");
+	printf("--------------------------------------------------\n");
+	printf("Angelica Hernandez: Fintech Entrepreneur Looking for Opportunities in Cloud Development v(0u<)v \n");
+	printf("--------------------------------------------------\n");
 }
 
 void exit_shell(){
