@@ -3,7 +3,6 @@
 shell:  
 	gcc -o shell shell.c
 	gcc -o clear clear.c
-	gcc -o cd cd.c
 	gcc -o ls ls.c
 	gcc -o clearls clearls.c
 extras:
@@ -13,7 +12,6 @@ extras:
 clean:
 	rm shell
 	rm clear
-	rm cd
 	rm ls
 	rm clearls
 	rm snake
