@@ -8,7 +8,7 @@ shell:
 extras:
 	g++ -std=c++11 -o  snake jsnake.cpp  -lncurses
 	gcc -o shelly shelly.c
-        
+	gcc -o spoilers spoilers.c        
 clean:
 	rm shell
 	rm clear
