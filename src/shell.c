@@ -8,9 +8,9 @@
 #include <stdbool.h>
 
 #define LIST_SIZE 5
-//char* history[LIST_SIZE];
 char history[LIST_SIZE][20];
 int curr_size = 0;
+void parse(char command[], char *arg[]);
 void add_command_to_history(char* command);
 void print_history();
 void print_team_banner();
@@ -18,22 +18,10 @@ void exit_shell();
 
 char* shell_dir;
 
-void parse(char command[], char *arg[]){
-	char *split;
-	split = strtok(command," "); // split at space
-	int i = 0;
-	while(split != NULL) {
-		arg[i]= split;  // array to store arguments
-		split = strtok(NULL," "); // continue to tokenize
-		i++; // keeps track of number of arguments
-	}
-}
-
 int main (int argc, char* argv[]) {
 	char command[32];
 	char *split;
-        char *arg[20];
-
+  char *arg[20];
 	char filepath[100];
 	shell_dir = getcwd(filepath, 100);
 	strcat(shell_dir, "/");
@@ -51,9 +39,8 @@ int main (int argc, char* argv[]) {
       command[i] = tolower(command[i]);
   }
 
-  while (strcmp(command, "exit")!=0) { //while the command isnt quit
-  	   //parse the command
-	  parse(command, arg);
+  while (strcmp(command, "exit")!=0) { //while the command isnt exit
+	  parse(command, arg); //parse the command
       //create new child
 	  if(strcmp(arg[0],"history")==0) {
 	  	print_history();
@@ -66,51 +53,22 @@ int main (int argc, char* argv[]) {
 			}
 	  }
 	  else {
-		add_command_to_history(arg[0]);
-		if(strcmp(arg[0],"cd")==0) {
-		        char cwd[100]; 
-	        	if (getcwd(cwd, 100) == NULL){ 
-		                perror("chdir() error"); 
-		        } 
-	        	else { 
-		                int cd = chdir(".."); 
-		                if (cd != 0){ 
-	        	                perror("cd failed.... (/# 0 A0)/\n"); 
-	                	} 
-		                else { 
-		                        char* current_dir = getcwd(cwd, 100);
-					printf("%s ", current_dir);
-	                	} 
-		        }
-			for (int j = 0; j < 20; ++j) // need to clear the whole arg array
-				arg[j] = NULL;
-			printf (">>> ");
-			scanf(" %[^\n]s", command);
-			for(int i = 0; i<strlen(command); i++){
-				command[i] = tolower(command[i]);
-			}
-		}
-		else {
-			int child = fork();
-			if(child < 0){ //error
-	          		printf("ERROR: error forking child 0n0");
-        		  	exit(1);
-			}
-			else if (child == 0) {
-				// in the child process
-				//execvp (arg[0],arg);
-				char* path = shell_dir;
-				strcat(path, arg[0]);
-				printf("%s", path);
-				execl(path, "", NULL);
-				printf ("ERROR: ~>A<~  ~>A<~\n\texecl failed for custom commands. Attempting to use default commands\n"); //error will show only if execvp encounters an error
-		    
-		    execvp(arg[0], arg); //if execl doesnt work, then will fall into testing for execvp
-		    printf("ERROR: >.> >.> >.> >.> >.>\n\texecvp failed too!\n");
-		    exit(1);												 //else it will never reach here for the exit
-			}
-			else{
-				wait(NULL); //parent waits for child proc to complete
+			add_command_to_history(arg[0]);
+			if(strcmp(arg[0],"cd")==0) {
+	      char cwd[100];
+	    	if (getcwd(cwd, 100) == NULL){
+	        perror("chdir() error");
+	      }
+	    	else {
+	        int cd = chdir("..");
+	        if (cd != 0){
+						perror("cd failed.... (/# 0 A0)/\n");
+	      	}
+	        else {
+						char* current_dir = getcwd(cwd, 100);
+						printf("%s ", current_dir);
+	      	}
+	      }
 				for (int j = 0; j < 20; ++j) // need to clear the whole arg array
 					arg[j] = NULL;
 				printf (">>> ");
@@ -119,15 +77,41 @@ int main (int argc, char* argv[]) {
 					command[i] = tolower(command[i]);
 				}
 			}
-		}
+			else {
+				int child = fork();
+				if(child < 0){ //error
+      		printf("ERROR: error forking child 0n0");
+  		  	exit(1);
+				}
+				else if (child == 0) {
+					// in the child process
+					char* path = shell_dir;
+					strcat(path, arg[0]);
+					printf("%s", path);
+					execl(path, "", NULL);
+					printf ("ERROR: ~>A<~  ~>A<~\n\texecl failed for custom commands. Attempting to use default commands\n"); //error will show only if execl encounters an error
+			    execvp(arg[0], arg); //if execl doesnt work, then will fall into testing for execvp
+			    printf("ERROR: >.> >.> >.> >.> >.>\n\texecvp failed too!\n");
+			    exit(1); //if it enters either one of the two execs, it will never reach here for the exit
+				}
+				else{
+					wait(NULL); //parent waits for child proc to complete
+					for (int j = 0; j < 20; ++j) // need to clear the whole arg array
+						arg[j] = NULL;
+					printf (">>> ");
+					scanf(" %[^\n]s", command);
+					for(int i = 0; i<strlen(command); i++){
+						command[i] = tolower(command[i]);
+					}
+				}
+			}
 	  }
   }
 	if(strcmp(command,"exit")==0){
 		exit_shell();
 	}
-	return 0; //returns contrl to the original shell
+	return 0; //returns control to the original shell
 }
-
 
 void add_command_to_history(char* command) {
 	if(curr_size < LIST_SIZE) {
@@ -157,17 +141,27 @@ void print_team_banner() {
 		printf("Krystal Leong: High Performance Computing Cloud Engineer /(=A=)/ ==3\n");
 		printf("--------------------------------------------------\n");
 		printf("Michael Ousseinov: Deadlock Systems Specialist (Consultant) (`@ w @`)\n");
-	    printf("--------------------------------------------------\n");
+		printf("--------------------------------------------------\n");
 		printf("Angelica Hernandez: Amazon Developer v(0u<)v \n");
 		printf("--------------------------------------------------\n");
-		
 }
 
 void exit_shell(){
 	print_team_banner();
-	fgetc(stdin);
-	char ch;
 	printf("PRESS ENTER!");
+	fgetc(stdin); //waits for user to input something on keyboard; waiting for keystroke
+	char ch;
 	//here also if you press any other key will wait until you press ENTER
 	scanf("%c",&ch);
+}
+
+void parse(char command[], char *arg[]){
+	char *split;
+	split = strtok(command," "); // split at space
+	int i = 0;
+	while(split != NULL) {
+		arg[i]= split;  // array to store arguments
+		split = strtok(NULL," "); // continue to tokenize
+		i++; // keeps track of number of arguments
+	}
 }
