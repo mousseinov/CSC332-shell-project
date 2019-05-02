@@ -9,3 +9,11 @@ to cd .. + pwd).
 
 - **clear**: clear the terminal screen and print the list of directory and files in the current directory
 (i.e. equivalent to clear + ls).
+
+## Making
+For shell:
+> make -B 
+for extras(like snake and shelly):
+> make extras -B
+to clean:
+> make clean
