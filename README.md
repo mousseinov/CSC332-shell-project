@@ -17,3 +17,7 @@ For extras(like snake and shelly):
 ```make extras -B```<br/><br/>
 To clean:
 ```make clean```<br/><br/>
+
+## Running
+To run shell
+ ```./shell```
