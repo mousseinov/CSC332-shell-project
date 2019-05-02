@@ -15,6 +15,7 @@ For shell:
 ```make -B```<br/><br/>
 For extras(like snake and shelly):
 ```make extras -B```<br/><br/>
+(warning snake requires ncurses) <br/><br/>
 To clean:
 ```make clean```<br/><br/>
 
