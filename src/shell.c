@@ -140,9 +140,9 @@ void print_team_banner() {
 		printf("--------------------------------------------------\n");
 		printf("Krystal Leong: High Performance Computing Cloud Engineer /(=A=)/ ==3\n");
 		printf("--------------------------------------------------\n");
-		printf("Michael Ousseinov: Deadlock Systems Specialist (Consultant) (`@ w @`)\n");
+		printf("Michael Ousseinov: Deadlock Systems Specialist (Consultant Intern) (`@ w @`)\n");
 		printf("--------------------------------------------------\n");
-		printf("Angelica Hernandez: Amazon Developer v(0u<)v \n");
+		printf("Angelica Hernandez: Fintech Entrepreneur Looking for Opportunities in Cloud Development v(0u<)v \n");
 		printf("--------------------------------------------------\n");
 }
 
