@@ -15,5 +15,5 @@ For shell:
 ```make -B```<br/><br/>
 For extras(like snake and shelly):
 ```make extras -B```<br/><br/>
-to clean:
+To clean:
 ```make clean```<br/><br/>
