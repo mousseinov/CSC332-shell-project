@@ -19,5 +19,5 @@ To clean:
 ```make clean```<br/><br/>
 
 ## Running
-To run shell
+To run shell:
  ```./shell```
