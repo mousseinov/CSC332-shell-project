@@ -22,3 +22,7 @@ To clean:
 ## Running
 To run shell:
  ```./shell```
+ 
+## Notes
+For this project, if the user enters `ls` as the command, it will execute `ls` as a custom command (using execl) since we have our own `ls.c` and ls executable as a part of this directory 
+
