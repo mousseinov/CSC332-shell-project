@@ -38,7 +38,7 @@ int main (int argc, char* argv[]) {
 	shell_dir = getcwd(filepath, 100);
 	strcat(shell_dir, "/");
 
-	printf("Welcome to our shell! Here are the following custom commands:\n");
+	printf("Welcome to our shell! Here are the following custom commands: OwO UwU\n");
 	printf("Exit*\n");
 	printf("History*\n");
 	printf("Cd*\n");
@@ -75,7 +75,7 @@ int main (int argc, char* argv[]) {
 	        	else { 
 		                int cd = chdir(".."); 
 		                if (cd != 0){ 
-	        	                perror("cd failed: cannot go up any further.\n"); 
+	        	                perror("cd failed.... (/# 0 A0)/\n"); 
 	                	} 
 		                else { 
 		                        char* current_dir = getcwd(cwd, 100);
@@ -93,7 +93,7 @@ int main (int argc, char* argv[]) {
 		else {
 			int child = fork();
 			if(child < 0){ //error
-	          		printf("ERROR: error forking child");
+	          		printf("ERROR: error forking child 0n0");
         		  	exit(1);
 			}
 			else if (child == 0) {
@@ -103,10 +103,10 @@ int main (int argc, char* argv[]) {
 				strcat(path, arg[0]);
 				printf("%s", path);
 				execl(path, "", NULL);
-				printf ("ERROR: execl failed for custom commands. Using default commands\n"); //error will show only if execvp encounters an error
+				printf ("ERROR: ~>A<~  ~>A<~\n\texecl failed for custom commands. Attempting to use default commands\n"); //error will show only if execvp encounters an error
 		    
 		    execvp(arg[0], arg); //if execl doesnt work, then will fall into testing for execvp
-		    printf("ERROR: execvp failed too!\n");
+		    printf("ERROR: >.> >.> >.> >.> >.>\n\texecvp failed too!\n");
 		    exit(1);												 //else it will never reach here for the exit
 			}
 			else{
@@ -143,22 +143,22 @@ void add_command_to_history(char* command) {
 
 void print_history() {
 	if(curr_size == 0)
-		printf("--- No History\n");
+		printf("--- No History ;A;\n");
 	for(int i = 0; i < curr_size; i++)
 		printf("--- %s\n", history[i]);
 }
 
 void print_team_banner() {
 		printf("This shell wouldn't have been possible without these awesome people <3\n");
-		printf("Team Members:\n");
+		printf("Team Members: UwU\n");
 		printf("----------------\n");
-		printf("Tahsin Jahin: Linux Performance Engineer\n");
+		printf("Tahsin Jahin: Linux Performance Engineer \\(>u<)/\n");
 		printf("--------------------------------------------------\n");
-		printf("Krystal Leong: High Performance Computing Cloud Engineer\n");
+		printf("Krystal Leong: High Performance Computing Cloud Engineer /(=A=)/ ==3\n");
 		printf("--------------------------------------------------\n");
-		printf("Michael Ousseinov: Deadlock Systems Specialist (Consultant)\n");
+		printf("Michael Ousseinov: Deadlock Systems Specialist (Consultant) (`@ w @`)\n");
 	    printf("--------------------------------------------------\n");
-		printf("Angelica Hernandez: Amazon Developer  \n");
+		printf("Angelica Hernandez: Amazon Developer v(0u<)v \n");
 		printf("--------------------------------------------------\n");
 		
 }
