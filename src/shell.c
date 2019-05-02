@@ -36,6 +36,7 @@ int main (int argc, char* argv[]) {
 
 	char filepath[100];
 	shell_dir = getcwd(filepath, 100);
+	strcat(shell_dir, "/");
 
 	printf("Welcome to our shell! Here are the following custom commands:\n");
 	printf("Exit*\n");
@@ -53,7 +54,6 @@ int main (int argc, char* argv[]) {
   while (strcmp(command, "exit")!=0) { //while the command isnt quit
   	   //parse the command
 	  parse(command, arg);
-
       //create new child
 	  if(strcmp(arg[0],"history")==0) {
 	  	print_history();
@@ -91,10 +91,6 @@ int main (int argc, char* argv[]) {
 			}
 		}
 		else {
-			char path[1024];
-		        strcat(path, shell_dir);
-			strcat(path, "/");
-			strcat(path, arg[0]);
 			int child = fork();
 			if(child < 0){ //error
 	          		printf("ERROR: error forking child");
@@ -103,6 +99,9 @@ int main (int argc, char* argv[]) {
 			else if (child == 0) {
 				// in the child process
 				//execvp (arg[0],arg);
+				char* path = shell_dir;
+				strcat(path, arg[0]);
+				printf("%s", path);
 				execl(path, "", NULL);
 				printf ("ERROR: execl failed for custom commands. Using default commands\n"); //error will show only if execvp encounters an error
 		    
