@@ -16,6 +16,8 @@ void print_history();
 void print_team_banner();
 void exit_shell();
 
+char* shell_dir;
+
 void parse(char command[], char *arg[]){
 	char *split;
 	split = strtok(command," "); // split at space
@@ -31,6 +33,9 @@ int main (int argc, char* argv[]) {
 	char command[32];
 	char *split;
         char *arg[20];
+
+	char filepath[100];
+	shell_dir = getcwd(filepath, 100);
 
 	printf("Welcome to our shell! Here are the following custom commands:\n");
 	printf("Exit*\n");
@@ -86,6 +91,10 @@ int main (int argc, char* argv[]) {
 			}
 		}
 		else {
+			char path[1024];
+		        strcat(path, shell_dir);
+			strcat(path, "/");
+			strcat(path, arg[0]);
 			int child = fork();
 			if(child < 0){ //error
 	          		printf("ERROR: error forking child");
@@ -94,7 +103,7 @@ int main (int argc, char* argv[]) {
 			else if (child == 0) {
 				// in the child process
 				//execvp (arg[0],arg);
-				execl(arg[0], "", NULL);
+				execl(path, "", NULL);
 				printf ("ERROR: execl failed for custom commands. Using default commands\n"); //error will show only if execvp encounters an error
 		    
 		    execvp(arg[0], arg); //if execl doesnt work, then will fall into testing for execvp
