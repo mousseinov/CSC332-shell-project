@@ -16,6 +16,8 @@ void print_history();
 void print_team_banner();
 void exit_shell();
 
+// keep track of the original filepath (e.g. if changing directories, we will still be able to call
+// custom commands
 char* shell_dir;
 
 int main (int argc, char* argv[]) {
@@ -23,7 +25,9 @@ int main (int argc, char* argv[]) {
 	char *split;
 	char *arg[20];
 	char filepath[100];
+	// store the path of this program; should be with the source files
 	shell_dir = getcwd(filepath, 100);
+	// make sure we are not trying to access a file with the same name as the folder
 	strcat(shell_dir, "/");
 
 	printf("Welcome to our shell! Here are the following custom commands: OwO UwU\n");
@@ -65,6 +69,7 @@ int main (int argc, char* argv[]) {
 						perror("cd failed.... (/# 0 A0)/\n");
 					}
 					else {
+						// get new directory
 						char* current_dir = getcwd(cwd, 100);
 						printf("%s ", current_dir);
 					}
@@ -88,8 +93,10 @@ int main (int argc, char* argv[]) {
 					char* path = shell_dir;
 					strcat(path, arg[0]);
 					printf("%s", path);
+					// attempt to use custom commands
 					execl(path, "", NULL);
 					printf ("ERROR: ~>A<~  ~>A<~\n\texecl failed for custom commands. Attempting to use default commands\n"); //error will show only if execl encounters an error
+					// else run the default command
 					execvp(arg[0], arg); //if execl doesnt work, then will fall into testing for execvp
 					printf("ERROR: >.> >.> >.> >.> >.>\n\texecvp failed too!\n");
 					exit(1); //if it enters either one of the two execs, it will never reach here for the exit
