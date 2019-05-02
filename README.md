@@ -12,8 +12,8 @@ to cd .. + pwd).
 
 ## Making
 For shell:
-```make -B```
-for extras(like snake and shelly):
-```make extras -B```
+```make -B```<br/><br/>
+For extras(like snake and shelly):
+```make extras -B```<br/><br/>
 to clean:
-> make clean
+```make clean```<br/><br/>
