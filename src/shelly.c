@@ -7,7 +7,7 @@ int main()
 	printf("            _.-''|''-._			\n");
 	printf("         .-'     |     `-.		\n");
 	printf("       .'\\       |       /`.		\n");
-	printf("     .'   \\      |      /   `.		\n");;
+	printf("     .'   \\      |      /   `.		\n");
 	printf("     \\     \\     |     /     /		\n");
 	printf("      `\\    \\    |    /    /'		\n");
 	printf("        `\\   \\   |   /   /'		\n");
